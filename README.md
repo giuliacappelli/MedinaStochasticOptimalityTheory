@@ -1,6 +1,8 @@
 # Medina (2007) StOT model: basic
 
-This script computes a model of the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory.
+This script computes a model of the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory (StOT).
+
+Medina's analysis accounts for the gradient grammaticality of an implicit object across verbs, relying on StOT's floating constraints system. The input to the model has to contain the verb, its telicity, the perfectivity of the sentence, and the SPS of the verb. Medina's variant of StOT defines the re-ranking probabilities as a function of SPS, instead of assigning all constraints the same Gaussian distribution.
 
 ## Getting Started
 The script is standalone and runs on Python 3. It has been tested on Ubuntu 20.10.
@@ -71,6 +73,17 @@ To run it on the extended mock input data (getting the exact same output!), you 
     python3 optimizeMedinaBasic.py -s input/sps/ -j input/judgments/mock_judgments_ext.csv -o output/
 
 ### Output
+The script prints out in the output folder everything you need as a linguist to describe your input data and the output of the model you built.
+
+#### Terminal output
+While the script is running, it prints human-friendly comments in stdout so you can follow its progress.
+
+#### Preliminary data exploration
+First of all, you want to make sure the judgments you collected have a nice shape. The script plots a series of boxplots to do so, one for each verb, for each *sentence* type you provided in the input (results for filler sentences are collapsed). You can find these boxplots in:
+
+    output/preliminary/
+
+#### Output for each SPS file in input/sps/
 testo
 
 ## License
