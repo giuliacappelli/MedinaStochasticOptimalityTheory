@@ -34,19 +34,19 @@ Provide header-less, space-separated SPS files having verbs in the first column 
 #### Judgments file
 Provide headed, tab-separated judgment files having the following columns (handily, but not necessarily, in this order):
 
-* "verb": verb names
-* "sentence": sentence type based on experimental setting, may take the following values
+* `verb`: verb names
+* `sentence`: sentence type based on experimental setting, may take the following values
     * `target`: verbs of interest, no object
-    * "control": verbs of interest, overt object
-    * "filler_no": intransitive verbs, no object
-    * "filler_dobj": intransitive verbs, overt object
-* "telicity": verb telicity, may be either "telic" or "atelic"
-* "perfectivity": sentence perfectivity, may be either "perf" or "imperf"
-* "s1, s2, s3... sN": a column for each participant to the experiment, numbered progressively, containing their raw Likert-scale judgments. This script has been tested on 7-point Likert judgments, but it will work with any Likert scale you choose.
+    * `control`: verbs of interest, overt object
+    * `filler_no`: intransitive verbs, no object
+    * `filler_dobj`: intransitive verbs, overt object
+* `telicity`: verb telicity, may be either "telic" or "atelic"
+* `perfectivity`: sentence perfectivity, may be either "perf" or "imperf"
+* `s1, s2, s3... sN`: a column for each participant to the experiment, numbered progressively, containing their raw Likert-scale judgments. This script has been tested on 7-point Likert judgments, but it will work with any Likert scale you choose.
 
 Moreover, you may include two columns (either, both, or neither) that are going to be used in extended versions of this model, namely:
-* "iterativity": sentence iterativity, may be either "iter" or "noiter"
-* "mannspec": verb manner specification, may be either "spec" or "nospec"
+* `iterativity`: sentence iterativity, may be either "iter" or "noiter"
+* `mannspec`: verb manner specification, may be either "spec" or "nospec"
 They are useless for this script's purposes, but if you run the experiment including them in your design, you don't have to reshape your input to run the basic model.
 
 ### Parameters
@@ -79,9 +79,7 @@ The script prints out in the output folder everything you need as a linguist to 
 While the script is running, it prints human-friendly comments in stdout so you can follow its progress.
 
 #### Preliminary data exploration
-First of all, you want to make sure the judgments you collected have a nice shape. The script plots a series of boxplots to do so, one for each verb, for each *sentence* type you provided in the input (results for filler sentences are collapsed). You can find these boxplots in:
-
-    output/preliminary/
+First of all, you want to make sure the judgments you collected have a nice shape. The script plots a series of boxplots to do so, one for each verb, for each *sentence* type you provided in the input (results for filler sentences are collapsed). You can find these boxplots in `output/preliminary/`.
 
 #### Output for each SPS file in input/sps/
 testo
