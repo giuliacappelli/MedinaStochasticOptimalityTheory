@@ -1,6 +1,6 @@
 # Medina (2007) StOT model: basic
 
-This script computes a model of the grammaticality of implicit objects/arguments based on Medina (2007)'s variant of Stochastic Optimality Theory.
+This script computes a model of the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory.
 
 ## Getting Started
 The script is standalone and runs on Python 3. It has been tested on Ubuntu 20.10.
@@ -25,7 +25,27 @@ To install these packages in Python 3, make sure you have installed pip3 and run
 Be sure you have the script and the input folder within the same folder before starting.
 
 ### Characteristics of the input data
-testo
+
+#### SPS files
+Provide header-less, space-separated SPS files having verbs in the first column and SPS scores in the second column.
+
+#### Judgments file
+Provide headed, tab-separated judgment files having the following columns (handily, but not necessarily, in this order):
+
+* "verb": verb names
+* "sentence": sentence type based on experimental setting, may take the following values
+    * "target": verbs of interest, no object
+    * "control": verbs of interest, overt object
+    * "filler_no": intransitive verbs, no object
+    * "filler_dobj": intransitive verbs, overt object
+* "telicity": verb telicity, may be either "telic" or "atelic"
+* "perfectivity": sentence perfectivity, may be either "perf" or "imperf"
+* "s1, s2, s3... sN": a column for each participant to the experiment, numbered progressively, containing their raw Likert-scale judgments. This script has been tested on 7-point Likert judgments, but it will work with any Likert scale you choose.
+
+Moreover, you may include two columns (either, both, or neither) that are going to be used in extended versions of this model, namely:
+* "iterativity": sentence iterativity, may be either "iter" or "noiter"
+* "mannspec": verb manner specification, may be either "spec" or "nospec"
+They are useless for this script's purposes, but if you run the experiment including them in your design, you don't have to reshape your input to run the basic model.
 
 ### Parameters
 To perform a quick test run on the mock input data included in this repository, just run this under the main directory:
@@ -45,6 +65,10 @@ To access the list of parameters in your terminal, run:
 For instance, to run the script on the mock input data included in this repository by specifying each parameter, you would run:
 
     python3 optimizeMedinaBasic.py -s input/sps/ -j input/judgments/mock_judgments.csv -o output/
+    
+To run it on the extended mock input data (getting the exact same output!), you would instead run:
+
+    python3 optimizeMedinaBasic.py -s input/sps/ -j input/judgments/mock_judgments_ext.csv -o output/
 
 ### Output
 testo
@@ -53,8 +77,8 @@ testo
 This project is licensed under the MIT License.
 
 ## References
-* testo
-* testo
+* Medina, Tamara Nicol (2007). Learning which verbs allow object omission: verb semantic selectivity and the implicit object construction (Doctoral dissertation, Johns Hopkins University).
+* Kim, Najoung; Rawlins, Kyle; Smolensky, Paul (2019). "The complement-adjunct distinction as gradient blends: the case of English prepositional phrases", [lingbuzz/004723](https://ling.auf.net/lingbuzz/004723)
 
 ## Acknowledgments
 * testo
