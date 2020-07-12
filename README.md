@@ -36,7 +36,7 @@ Provide headed, tab-separated judgment files having the following columns (handi
 
 * "verb": verb names
 * "sentence": sentence type based on experimental setting, may take the following values
-    * "target": verbs of interest, no object
+    * `target`: verbs of interest, no object
     * "control": verbs of interest, overt object
     * "filler_no": intransitive verbs, no object
     * "filler_dobj": intransitive verbs, overt object
