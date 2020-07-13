@@ -88,6 +88,13 @@ To run it on the extended mock input data (getting the exact same output!), you 
 
     python3 optimizeMedinaBasic.py -s input/sps/ -j input/judgments/mock_judgments_ext.csv -o output/
 
+### Preprocessing
+The script will take care of preprocessing your input data (these innovations are not in Medina 2007). 
+
+In particular, it will compute z-scores of SPS values for each SPS input file to make results comparable across models. You can also choose to use raw SPS data by commenting out a paragraph in the script, at your own risk.
+
+Most importantly, we preprocessed raw judgment data following Kim et al. (2019). We computed the within-subject z-scores for the judgments, then averaged these scores to obtain the mean judgment for each sentence in the stimuli list, then normalized the mean judgments between 0 and 1.
+
 ### Output
 The script prints out in the output folder everything you need as a linguist to describe your input data and the output of the model you built.
 
@@ -102,6 +109,8 @@ Before computing any model with your data, you also want to check your hypothese
 Of course, you are also interested in the combined effect of your predictors on the gradient grammaticality judgments you collected. Medina (2007) accomplished this with a multiple regression, and we up the game with a linear mixed-effects model (LMEM). You can find the result table in `output/preliminary/lmem_[sps_filename].txt`. The R-style formula for the LMEM is:
 
     judgment ~ sps + telicity + perfectivity + (1|verb) + (1|subject)
+    
+and input judgments are *raw* ones instead of within-subject z-scores, since the LMEM will take care of that.
     
 Feel more confident reading your LMEMs' results in R? Need some coefficient that Python does not yield? Fear not: `output/preliminary/dataframe_input_lmem_[sps_filename].csv` contains the dataframe we used as input to the LMEM, so you can just open RStudio, plug that in, and run your analysis. I tested this in R 4.0.2 with lme4:lmer() and got the same results as in my Python script.
 
