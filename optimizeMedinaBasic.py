@@ -214,13 +214,11 @@ for sps in os.listdir(args.sps):
 		return (((d3-g3)/(sps_max-sps_min))*(x-sps_min))+g3
 		
 		
-	# functions: 8 individual partial orderings as joint probabilities of independent pairwise orderings
+	# functions: 4 individual partial orderings as joint probabilities of independent pairwise orderings
+	# Medina (2007: 101) says 8, but the useful ones are just half! namely, the ones where Faith is not above IntArg
 	
 	def jointIFTP(x,d1,g1,d2,g2,d3,g3):
 		return rerankFaith(x,d1,g1)*rerankTelic(x,d2,g2)*rerankPerf(x,d3,g3)
-	
-	def jointFITP(x,d1,g1,d2,g2,d3,g3):
-		return (1-rerankFaith(x,d1,g1))*rerankTelic(x,d2,g2)*rerankPerf(x,d3,g3)
 	
 	def jointTIFP(x,d1,g1,d2,g2,d3,g3):
 		return rerankFaith(x,d1,g1)*(1-rerankTelic(x,d2,g2))*rerankPerf(x,d3,g3)
@@ -228,17 +226,8 @@ for sps in os.listdir(args.sps):
 	def jointPIFT(x,d1,g1,d2,g2,d3,g3):
 		return rerankFaith(x,d1,g1)*rerankTelic(x,d2,g2)*(1-rerankPerf(x,d3,g3))
 	
-	def jointFTIP(x,d1,g1,d2,g2,d3,g3):
-		return (1-rerankFaith(x,d1,g1))*(1-rerankTelic(x,d2,g2))*rerankPerf(x,d3,g3)
-	
-	def jointFPIT(x,d1,g1,d2,g2,d3,g3):
-		return (1-rerankFaith(x,d1,g1))*rerankTelic(x,d2,g2)*(1-rerankPerf(x,d3,g3))
-	
 	def jointTPIF(x,d1,g1,d2,g2,d3,g3):
 		return rerankFaith(x,d1,g1)*(1-rerankTelic(x,d2,g2))*(1-rerankPerf(x,d3,g3))
-	
-	def jointFTPI(x,d1,g1,d2,g2,d3,g3):
-		return (1-rerankFaith(x,d1,g1))*(1-rerankTelic(x,d2,g2))*(1-rerankPerf(x,d3,g3))
 		
 		
 	# functions: probabilities of the 4 combinations of aspectual types
