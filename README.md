@@ -5,7 +5,7 @@ This script computes a model of the grammaticality of implicit objects based on 
 Medina's analysis accounts for the gradient grammaticality of an implicit object across verbs, relying on StOT's floating constraints system. The input to the model has to contain the verb, its telicity, the perfectivity of the sentence, and the SPS of the verb. Medina's variant of StOT defines the re-ranking probabilities as a function of SPS, instead of assigning all constraints the same Gaussian distribution.
 
 ## Getting Started
-The script is standalone and runs on Python 3. It has been tested on Ubuntu 20.10.
+The script runs on Python 3 and does not have to be installed. Works fine in Ubuntu 20.10.
 
 ### Prerequisites
 You need the following packages to make the script work:
