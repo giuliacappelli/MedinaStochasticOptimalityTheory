@@ -1,11 +1,11 @@
 # Medina (2007) StOT model: basic
 
-This script computes a model of the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory (StOT).
+This project computes a model of the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory (StOT).
 
 Medina's analysis accounts for the gradient grammaticality of an implicit object across verbs, relying on StOT's floating constraints system. The input to the model has to contain the verb, its telicity, the perfectivity of the sentence, and the SPS of the verb. Medina's variant of StOT defines the re-ranking probabilities as a function of SPS, instead of assigning all constraints the same Gaussian distribution.
 
 ## Getting Started
-The script runs on Python 3 and does not have to be installed. Works fine in Ubuntu 20.10.
+The script should run on Python 3.0+ and does not have to be installed. Runs fine on Python 3.8.2 in Ubuntu 20.10.
 
 ### Prerequisites
 You need the following packages to make the script work:
@@ -114,7 +114,7 @@ and input judgments are *raw* ones instead of within-subject z-scores, since the
     
 Feel more confident reading your LMEMs' results in R? Need some coefficient that Python does not yield? Fear not: `output/preliminary/dataframe_input_lmem_[sps_filename].csv` contains the dataframe we used as input to the LMEM, so you can just open RStudio, plug that in, and run your analysis. I tested this in R 4.0.2 with lme4:lmer() and got the same results as in my Python script.
 
-#### Output for each SPS file in input/sps/
+#### Output of the model proper
 Now we're all set to compute Medina's model. For each SPS input file, you find the model's results in `output/[sps_filename]/`. This folder(s) contain several items:
 * `constantsMedina.txt`: list of deltas and gammas computed by fitting Medina's model on input data (puzzled? read Medina 2007 to get it, it's crucial!)
 * `errors.txt`: individual and summed squared errors (to quantify the difference between actual and predicted judgments)
@@ -136,3 +136,8 @@ Many thanks to
 * @ellepannitto, my Python fairy
 * @najoungkim, for sharing references that ultimately led to this project
 * the Stack Overflow community, for the many code snippets that saved me from frustration
+
+## Known issues
+This script works fine, but it is too long, non adaptable to different inputs (e.g. inputs with more constraints, or differently named cells), and resource-heavy. I did not work on these issues since I only need it to run on small-ish judgment dataframes in three different flavors, but this is definitely something that needs to be done for elegance's sake.
+
+The solution would be to add an additional parameter in the preamble, asking for the total number of constraints in the model. The script would then figure out their names based on the columns in the judgment dataframe, and create the relevant modeling/plotting functions accordingly. This is easy in theory, but requires quite an intense restructuring of the code.
