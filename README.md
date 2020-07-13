@@ -8,7 +8,7 @@ Medina's analysis accounts for the gradient grammaticality of an implicit object
 The script is standalone and runs on Python 3. It has been tested on Ubuntu 20.10.
 
 ### Prerequisites
-You may need to install the following packages to make the script work:
+You need the following packages to make the script work:
 
     argparse>=1.1
     pandas>=0.25.3
@@ -29,7 +29,13 @@ Be sure you have the script and the input folder within the same folder before s
 ### Characteristics of the input data
 
 #### SPS files
-Provide header-less, space-separated SPS files having verbs in the first column and SPS scores in the second column.
+Provide header-less, space-separated SPS files having verbs in the first column and SPS scores in the second column. For instance,
+
+| | |
+|-|-|
+| eat | 5.27
+| approve | 3.50
+| like | 0.71
 
 #### Judgments file
 Provide headed, tab-separated judgment files having the following columns (handily, but not necessarily, in this order):
@@ -47,7 +53,17 @@ Provide headed, tab-separated judgment files having the following columns (handi
 Moreover, you may include two columns (either, both, or neither) that are going to be used in extended versions of this model, namely:
 * `iterativity`: sentence iterativity, may be either "iter" or "noiter"
 * `mannspec`: verb manner specification, may be either "spec" or "nospec"
-They are useless for this script's purposes, but if you run the experiment including them in your design, you don't have to reshape your input to run the basic model.
+
+These two columns are useless for this script's purposes, but if you run the experiment including them in your design, you don't have to reshape your input to run the basic model. 
+
+For instance, your input data will be shaped like this:
+
+verb | sentence | telicity | perfectivity | iterativity | mannspec | s1 | s2 | s3
+|-|-|-|-|-|-|-|-|-|
+eat | target | atelic | perf | iter | nospec | 4 | 5 | 4
+eat | target | atelic | imperf | iter | nospec | 6 | 6 | 7
+kill | target | telic | perf | iter | nospec | 2 | 3 | 2
+kill | target | telic | imperf | iter | nospec | 5 | 4 | 5
 
 ### Parameters
 To perform a quick test run on the mock input data included in this repository, just run this under the main directory:
@@ -79,7 +95,15 @@ The script prints out in the output folder everything you need as a linguist to 
 While the script is running, it prints human-friendly comments in stdout so you can follow its progress.
 
 #### Preliminary data exploration
-First of all, you want to make sure the judgments you collected have a nice shape. The script plots a series of boxplots to do so, one for each verb, for each *sentence* type you provided in the input (results for filler sentences are collapsed). You can find these boxplots in `output/preliminary/`.
+First of all, you want to make sure the judgments you collected have a nice shape. The script plots a series of boxplots to do so, one for each verb, for each *sentence* type you provided in the input (results for filler sentences are collapsed). You can find these boxplots in `output/preliminary/plot_boxplot_[sentence_type].png`.
+
+Before computing any model with your data, you also want to check your hypotheses first. You can see whether your aspectual types determine any difference in the median judgments in `output/preliminary/plot_preliminary_boxplot_[aspectual_type].png`, and you can visualize the effect of SPS on judgments in  `output/preliminary/plot_preliminary_scatterplot_[sps_filename].png`.
+
+Of course, you are also interested in the combined effect of your predictors on the gradient grammaticality judgments you collected. Medina (2007) accomplished this with a multiple regression, and we up the game with a linear mixed-effects model (LMEM). You can find the result table in `output/preliminary/lmem_[sps_filename].txt`. The R-style formula for the LMEM is:
+
+    judgment ~ sps + telicity + perfectivity + (1|verb) + (1|subject)
+    
+Feel more confident reading your LMEMs' results in R? Need some coefficient that Python does not yield? Fear not: `output/preliminary/dataframe_input_lmem_[sps_filename].csv` contains the dataframe we used as input to the LMEM, so you can just open RStudio, plug that in, and run your analysis. I tested this in R 4.0.2 with lme4:lmer() and got the same results as in my Python script.
 
 #### Output for each SPS file in input/sps/
 testo
@@ -88,7 +112,7 @@ testo
 This project is licensed under the MIT License.
 
 ## References
-* Medina, Tamara Nicol (2007). Learning which verbs allow object omission: verb semantic selectivity and the implicit object construction (Doctoral dissertation, Johns Hopkins University).
+* Medina, Tamara Nicol (2007). Learning which verbs allow object omission: verb semantic selectivity and the implicit object construction (PhD dissertation, Johns Hopkins University).
 * Kim, Najoung; Rawlins, Kyle; Smolensky, Paul (2019). "The complement-adjunct distinction as gradient blends: the case of English prepositional phrases", [lingbuzz/004723](https://ling.auf.net/lingbuzz/004723)
 
 ## Acknowledgments
