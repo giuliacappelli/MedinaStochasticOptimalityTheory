@@ -134,5 +134,5 @@ This project is licensed under the MIT License.
 ## Acknowledgments
 Many thanks to 
 * @ellepannitto, my Python fairy
-* Najoung Kim, for sharing references that ultimately led to this project
+* @najoungkim, for sharing references that ultimately led to this project
 * the Stack Overflow community, for the many code snippets that saved me from frustration
