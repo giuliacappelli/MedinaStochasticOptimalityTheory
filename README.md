@@ -106,7 +106,14 @@ Of course, you are also interested in the combined effect of your predictors on 
 Feel more confident reading your LMEMs' results in R? Need some coefficient that Python does not yield? Fear not: `output/preliminary/dataframe_input_lmem_[sps_filename].csv` contains the dataframe we used as input to the LMEM, so you can just open RStudio, plug that in, and run your analysis. I tested this in R 4.0.2 with lme4:lmer() and got the same results as in my Python script.
 
 #### Output for each SPS file in input/sps/
-testo
+Now we're all set to compute Medina's model. For each SPS input file, you find the model's results in `output/[sps_filename]/`. This folder(s) contain several items:
+* `constantsMedina.txt`: list of deltas and gammas computed by fitting Medina's model on input data (puzzled? read Medina 2007 to get it, it's crucial!)
+* `errors.txt`: individual and summed squared errors (to quantify the difference between actual and predicted judgments)
+* `pearson.txt`: Pearson's r and p-value between actual and predicted judgments, a line for each aspectual type in the input
+* `plot_prob_[constraint].png`: plot to visualize the probability of \*INT ARG reranking with each of the other constraints, based on each pair of deltas and gammas
+* `plot_prob_aspectualtypes.png`: plot to visualize the probability of an implicit object output for each aspectual type, based on the model results
+
+That's it, folks! Hope you liked running this script, I sure loved writing it :smiling_face_with_three_hearts:
 
 ## License
 This project is licensed under the MIT License.
@@ -116,5 +123,7 @@ This project is licensed under the MIT License.
 * Kim, Najoung; Rawlins, Kyle; Smolensky, Paul (2019). "The complement-adjunct distinction as gradient blends: the case of English prepositional phrases", [lingbuzz/004723](https://ling.auf.net/lingbuzz/004723)
 
 ## Acknowledgments
-* testo
-* testo
+Many thanks to 
+* @ellepannitto, my Python fairy
+* Najoung Kim, for sharing references that ultimately led to this project
+* the Stack Overflow community, for the many code snippets that saved me from frustration
