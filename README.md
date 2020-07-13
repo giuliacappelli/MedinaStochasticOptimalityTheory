@@ -29,7 +29,7 @@ Be sure you have the script and the input folder within the same folder before s
 ### Characteristics of the input data
 
 #### SPS files
-Provide header-less, space-separated SPS files having verbs in the first column and SPS scores in the second column. For instance,
+In `input/sps/`, provide header-less, space-separated SPS files having verbs in the first column and SPS scores in the second column. For instance,
 
 | | |
 |-|-|
@@ -38,7 +38,7 @@ Provide header-less, space-separated SPS files having verbs in the first column 
 | like | 0.71
 
 #### Judgments file
-Provide headed, tab-separated judgment files having the following columns (handily, but not necessarily, in this order):
+In `input/judgments/`, provide headed, tab-separated judgment files having the following columns (handily, but not necessarily, in this order):
 
 * `verb`: verb names
 * `sentence`: sentence type based on experimental setting, may take the following values
