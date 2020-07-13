@@ -12,7 +12,7 @@ You need the following packages to make the script work:
 
     argparse>=1.1
     pandas>=0.25.3
-    numpy>=0.25.3
+    numpy>=1.17.4
     matplotlib>=3.1.2
     scipy>=1.3.3
     seaborn>=0.10.0
