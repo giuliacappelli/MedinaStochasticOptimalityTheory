@@ -1,4 +1,4 @@
-# MedStOT model: modeling the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory (StOT)
+# MedStOT model: modeling the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory
 
 This project computes a model of the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory (StOT).
 
