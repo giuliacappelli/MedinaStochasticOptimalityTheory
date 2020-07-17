@@ -27,7 +27,7 @@ my_parser.add_argument('--sps',
 my_parser.add_argument('--judgments',
                        '-j',
                        action='store',
-                       default='input/judgments/mock_judgments.csv',
+                       default='input/judgments/mock_judgments_ext.csv',
                        help='file containing tab-separated raw judgments')
                        
 my_parser.add_argument('--output',
