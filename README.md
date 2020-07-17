@@ -5,10 +5,10 @@ This project computes a model of the grammaticality of implicit objects based on
 Medina's analysis accounts for the gradient grammaticality of an implicit object across verbs, relying on StOT's floating constraints system. The input to the model has to contain the verb, its telicity, the perfectivity of the sentence, and the SPS of the verb. Medina's variant of StOT defines the re-ranking probabilities as a function of SPS, instead of assigning all constraints the same Gaussian distribution.
 
 ## Getting Started
-The script should run on Python 3.0+ and does not have to be installed. Runs fine on Python 3.8.2 in Ubuntu 20.10.
+The scripts should run on Python 3.0+ and do not have to be installed. They run fine on Python 3.8.2 in Ubuntu 20.10.
 
 ### Prerequisites
-You need the following packages to make the script work:
+You need the following packages to make the scripts work:
 
     argparse>=1.1
     pandas>=0.25.3
@@ -22,9 +22,15 @@ You need the following packages to make the script work:
 To install these packages in Python 3, make sure you have installed pip3 and run:
 
     pip3 install <package>
+    
+### Scripts in this project
+This project contains three scripts, one for each model of the grammaticality of implicit objects I am going to build:
+* `optimizeMedinaBasic.py` reproduces Medina's original model, whose constraints are \*IntArg, FaithArg, PerfCoda, and TelicEnd
+* `optimizeMedinaExtended1.py` computes the original model with an additional constraint, NonIterArg (Non-Iterative Argument)
+* `optimizeMedinaExtended2.py` computes the Extended1 model with an additional constraint, MannSpecArg (Manner-Specified Argument)
 
-## Running the script
-Be sure you have the script and the input folder within the same folder before starting.
+## Running the scripts
+Make sure you have the scripts and the input folder within the same folder before starting.
 
 ### Characteristics of the input data
 
@@ -49,12 +55,10 @@ In `input/judgments/`, provide headed, tab-separated judgment files having the f
 * `telicity`: verb telicity, may be either "telic" or "atelic"
 * `perfectivity`: sentence perfectivity, may be either "perf" or "imperf"
 * `s1, s2, s3... sN`: a column for each participant to the experiment, numbered progressively, containing their raw Likert-scale judgments. This script has been tested on 7-point Likert judgments, but it will work with any Likert scale you choose.
+* `iterativity`: sentence iterativity, may be either "iter" or "noiter" (OPTIONAL to run `optimizeMedinaBasic.py`)
+* `mannspec`: verb manner specification, may be either "spec" or "nospec" (OPTIONAL to run `optimizeMedinaExtended1.py`)
 
-Moreover, you may include two columns (either, both, or neither) that are going to be used in extended versions of this model, namely:
-* `iterativity`: sentence iterativity, may be either "iter" or "noiter"
-* `mannspec`: verb manner specification, may be either "spec" or "nospec"
-
-These two columns are useless for this script's purposes, but if you run the experiment including them in your design, you don't have to reshape your input to run the basic model. 
+The scripts take care of excluding any optional column among these from the analysis, so that you don't need to do that manually.
 
 For instance, your input data will be shaped like this:
 
@@ -68,25 +72,25 @@ kill | target | telic | imperf | iter | nospec | 5 | 4 | 5
 ### Parameters
 To perform a quick test run on the mock input data included in this repository, just run this under the main directory:
 
-    python3 optimizeMedinaBasic.py
+    python3 optimizeMedina[Basic|Extended1|Extended2].py
 
-You may pass several optional parameters to the script:
+You may pass several optional parameters to the scripts:
 
-    --sps, -s:        folder containing SPS files
-    --judgments, -j:  file containing raw acceptability judgments
-    --output, -o:     output folder
+    --sps, -s:        folder containing SPS files (defaults to input/sps/)
+    --judgments, -j:  file containing raw acceptability judgments (defaults to mock_judgments_ext.csv)
+    --output, -o:     output folder (defaults to output/)
     
 To access the list of parameters in your terminal, run:
 
-    python3 optimizeMedinaBasic.py -h
+    python3 optimizeMedina[Basic|Extended1|Extended2].py -h
     
 For instance, to run the script on the mock input data included in this repository by specifying each parameter, you would run:
 
-    python3 optimizeMedinaBasic.py -s input/sps/ -j input/judgments/mock_judgments.csv -o output/
+    python3 optimizeMedina[Basic|Extended1|Extended2].py -s input/sps/ -j input/judgments/mock_judgments_ext.csv -o output/
     
-To run it on the extended mock input data (getting the exact same output!), you would instead run:
+To run `optimizeMedinaBasic.py` on the reduced mock input data (getting the exact same output!), you would instead run:
 
-    python3 optimizeMedinaBasic.py -s input/sps/ -j input/judgments/mock_judgments_ext.csv -o output/
+    python3 optimizeMedinaBasic.py -s input/sps/ -j input/judgments/mock_judgments.csv -o output/
 
 ### Preprocessing
 The script will take care of preprocessing your input data (these innovations are not in Medina 2007). 
@@ -122,7 +126,7 @@ Now we're all set to compute Medina's model. For each SPS input file, you find t
 * `plot_prob_[constraint].png`: plot to visualize the probability of \*INT ARG reranking with each of the other constraints, based on each pair of deltas and gammas
 * `plot_prob_aspectualtypes.png`: plot to visualize the probability of an implicit object output for each aspectual type, based on the model results
 
-That's it, folks! Hope you liked running this script, I sure loved writing it :smiling_face_with_three_hearts:
+That's it, folks! Hope you liked running these scripts, I sure loved writing them :smiling_face_with_three_hearts:
 
 ## License
 This project is licensed under the MIT License.
@@ -138,6 +142,4 @@ Many thanks to
 * the Stack Overflow community, for the many code snippets that saved me from frustration
 
 ## Known issues
-This script works fine, but it is too long, non adaptable to different inputs (e.g. inputs with more constraints, or differently named cells), and resource-heavy. I did not work on these issues since I only need it to run on small-ish judgment dataframes in three different flavors, but this is definitely something that needs to be done for elegance's sake.
-
-The solution would be to add an additional parameter in the preamble, asking for the total number of constraints in the model. The script would then figure out their names based on the columns in the judgment dataframe, and create the relevant modeling/plotting functions accordingly. This is easy in theory, but requires quite an intense restructuring of the code.
+The scripts work fine, but they are too long, non adaptable to different inputs (e.g. inputs with more constraints, or differently named cells), and resource-heavy. Most importantly, they are TOO MANY: a single, well-written script would suffice. I did not work on these issues since I only need this project to run on small-ish judgment dataframes in three different flavors, but this is definitely something that needs to be done for elegance's sake.
