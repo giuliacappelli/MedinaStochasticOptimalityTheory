@@ -2,7 +2,7 @@
 
 This project computes a model of the grammaticality of implicit objects based on Medina (2007)'s variant of Stochastic Optimality Theory (StOT).
 
-Medina's analysis accounts for the gradient grammaticality of an implicit object across verbs, relying on StOT's floating constraints system. The input to the model has to contain the verb, its telicity, the perfectivity of the sentence, and the SPS of the verb. Medina's variant of StOT defines the re-ranking probabilities as a function of SPS, instead of assigning all constraints the same Gaussian distribution.
+Medina's analysis accounts for the gradient grammaticality of an implicit object across verbs, relying on StOT's floating constraints system. The input to the model has to contain the verb, its telicity and manner specification features, the perfectivity and iterativity features of the sentence, and the SPS of the verb. Medina's variant of StOT defines the re-ranking probabilities as a function of SPS, instead of assigning all constraints the same Gaussian distribution.
 
 ## Getting Started
 The scripts should run on Python 3.0+ and do not have to be installed. They run fine on Python 3.8.2 in Ubuntu 20.10.
@@ -18,6 +18,7 @@ You need the following packages to make the scripts work:
     seaborn>=0.10.0
     statsmodels>=0.11.1
     statannot>=0.2.3
+    tikzplotlib>=0.10.1
 
 To install these packages in Python 3, make sure you have installed pip3 and run:
 
@@ -42,6 +43,16 @@ In `input/sps/`, provide header-less, space-separated SPS files having verbs in 
 | eat | 5.27
 | approve | 3.50
 | like | 0.71
+
+#### Zipf scores files
+In `input/zipf/`, provide header-less, space-separated SPS files having verbs in the first column and Zipf scores (base 10 logarithm of the
+frequency-per-billion-words) in the second column. For instance,
+
+| | |
+|-|-|
+| eat | 5.27
+| approve | 3.50
+| like | 2.71
 
 #### Judgments file
 In `input/judgments/`, provide headed, tab-separated judgment files having the following columns (handily, but not necessarily, in this order):
@@ -77,7 +88,8 @@ To perform a quick test run on the mock input data included in this repository, 
 You may pass several optional parameters to the scripts:
 
     --sps, -s:        folder containing SPS files (defaults to input/sps/)
-    --judgments, -j:  file containing raw acceptability judgments (defaults to mock_judgments_ext.csv)
+    --judgments, -j:  file containing raw acceptability judgments (defaults to input/judgments/mock_judgments_ext.csv)
+    --zipf, -z:       file containing Zipf scores (defaults to input/judgments/zipf.csv)
     --output, -o:     output folder (defaults to output/)
     
 To access the list of parameters in your terminal, run:
@@ -86,21 +98,17 @@ To access the list of parameters in your terminal, run:
     
 For instance, to run the script on the mock input data included in this repository by specifying each parameter, you would run:
 
-    python3 optimizeMedina[Basic|Extended1|Extended2].py -s input/sps/ -j input/judgments/mock_judgments_ext.csv -o output/
-    
-To run `optimizeMedinaBasic.py` on the reduced mock input data (getting the exact same output!), you would instead run:
-
-    python3 optimizeMedinaBasic.py -s input/sps/ -j input/judgments/mock_judgments.csv -o output/
+    python3 optimizeMedina[Basic|Extended1|Extended2].py -s input/sps/ -j input/judgments/mock_judgments_ext.csv -z input/judgments/zipf.csv -o output/
 
 ### Preprocessing
 The script will take care of preprocessing your input data (these innovations are not in Medina 2007). 
 
-In particular, it will compute z-scores of SPS values for each SPS input file to make results comparable across models. You can also choose to use raw SPS data by commenting out a paragraph in the script, at your own risk.
+In particular, it will compute min-max normalized (or z-scores of) SPS values for each SPS input file to make results comparable across models. You can also choose to use raw SPS data by commenting out a paragraph in the script, at your own risk.
 
-Most importantly, we preprocessed raw judgment data following Kim et al. (2019). We computed the within-subject z-scores for the judgments, then averaged these scores to obtain the mean judgment for each sentence in the stimuli list, then normalized the mean judgments between 0 and 1.
+Most importantly, I preprocessed raw judgment data following Kim et al. (2019). I computed the within-subject z-scores for the judgments, then averaged these scores to obtain the mean judgment for each sentence in the stimuli list, then normalized the mean judgments between 0 and 1.
 
 ### Output
-The script prints out in the output folder everything you need as a linguist to describe your input data and the output of the model you built.
+The script prints out in the output folder everything you need as a linguist to describe your input data and the output of the model you built. As a treat, the scripts save each plot both in png and in tikz (LaTeX) format, to suit your every publication need.
 
 #### Terminal output
 While the script is running, it prints human-friendly comments in stdout so you can follow its progress.
@@ -110,9 +118,9 @@ First of all, you want to make sure the judgments you collected have a nice shap
 
 Before computing any model with your data, you also want to check your hypotheses first. You can see whether your aspectual types determine any difference in the median judgments in `output/preliminary/plot_preliminary_boxplot_[aspectual_type].png`, and you can visualize the effect of SPS on judgments in  `output/preliminary/plot_preliminary_scatterplot_[sps_filename].png`.
 
-Of course, you are also interested in the combined effect of your predictors on the gradient grammaticality judgments you collected. Medina (2007) accomplished this with a multiple regression, and we up the game with a linear mixed-effects model (LMEM). You can find the result table in `output/preliminary/lmem_[sps_filename].txt`. The R-style formula for the LMEM is:
+Of course, you are also interested in the combined effect of your predictors on the gradient grammaticality judgments you collected. Medina (2007) accomplished this with a multiple regression, and I up the game with a linear mixed-effects model (LMEM). You can find the result table in `output/preliminary/lmem_[sps_filename].txt`. The R-style formula for the LMEM is:
 
-    judgment ~ sps + telicity + perfectivity + (1|verb) + (1|subject)
+    judgment ~ sps + telicity + perfectivity + iterativity + mannspec + (1|verb) + (1|subject)
     
 and input judgments are *raw* ones instead of within-subject z-scores, since the LMEM will take care of that.
     
@@ -121,8 +129,8 @@ Feel more confident reading your LMEMs' results in R? Need some coefficient that
 #### Output of the model proper
 Now we're all set to compute Medina's model. For each SPS input file, you find the model's results in `output/[sps_filename]/`. This folder(s) contain several items:
 * `constantsMedina.txt`: list of deltas and gammas computed by fitting Medina's model on input data (puzzled? read Medina 2007 to get it, it's crucial!)
-* `errors.txt`: individual and summed squared errors (to quantify the difference between actual and predicted judgments)
-* `pearson.txt`: Pearson's r and p-value between actual and predicted judgments, a line for each aspectual type in the input
+* `errors.txt`: individual squared errors (to quantify the difference between actual and predicted judgments) and adjusted R squared values for the whole model
+* `pearson.txt`: Pearson's r and p-value between actual and predicted judgments, a line for each aspectual type in the input (and the overall value for the model)
 * `plot_prob_[constraint].png`: plot to visualize the probability of \*INT ARG reranking with each of the other constraints, based on each pair of deltas and gammas
 * `plot_prob_aspectualtypes.png`: plot to visualize the probability of an implicit object output for each aspectual type, based on the model results
 
