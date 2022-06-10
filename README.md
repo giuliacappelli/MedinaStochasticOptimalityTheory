@@ -31,7 +31,10 @@ This project contains three scripts, one for each model of the grammaticality of
 * `optimizeMedinaExtended2.py` computes the Extended1 model with an additional constraint, MannSpecArg (Manner-Specified Argument)
 
 ## Running the scripts
-Make sure you have the scripts and the input folder within the same folder before starting.
+Make sure you have the scripts and the input folder within the same folder before starting. You may run these scripts on three different kinds of input data:
+* the mock input data included in this repository for your convenience
+* the actual input data I used in my dissertation, freely available and documented [here](https://github.com/giuliacappelli/dissertationData)
+* mock data you can generate (and fiddle with) [with my script](https://github.com/giuliacappelli/generateMockLikertGrammaticalityJudgments) to suit your testing needs before running an experiment of your own
 
 ### Characteristics of the input data
 
